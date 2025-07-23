@@ -433,35 +433,95 @@ int main() {
 
 ---
 
+## Pointer Guess-the-Output Snippets (C)
 
-## 🔹 Common Interview Snippets
-
-### Q1: Swap two numbers using pointers
-
+### Snippet 1
 ```c
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
+// 1
+int a = 10;
+int *p = &a;
+*p = *p + 1;
+printf("%d\n", a);
 ```
 
-### Q2: Reverse array using pointers
-
+### Snippet 2
 ```c
-void reverse(int *arr, int size) {
-    int *start = arr;
-    int *end = arr + size - 1;
-    while(start < end) {
-        int temp = *start;
-        *start = *end;
-        *end = temp;
-        start++;
-        end--;
-    }
-}
+// 2
+int a = 5;
+int *p = &a;
+int **pp = &p;
+printf("%d\n", **pp);
 ```
 
+### Snippet 3
+```c
+// 3
+int arr[] = {1, 2, 3, 4};
+int *p = arr;
+printf("%d\n", *(p + 2));
+```
+
+### Snippet 4
+```c
+// 4
+char *str = "Hello";
+printf("%c\n", *(str + 1));
+```
+
+### Snippet 5
+```c
+// 5
+int x = 10;
+int *p = &x;
+*p += 5;
+printf("%d\n", x);
+```
+
+### Snippet 6
+```c
+// 6
+int x = 10;
+int *p = &x;
+int y = *p++;
+printf("%d\n", y);
+```
+
+### Snippet 7
+```c
+// 7
+int a = 1;
+int b = 2;
+int *p = &a;
+*p = b;
+printf("%d\n", a);
+```
+
+### Snippet 8
+```c
+// 8
+int arr[] = {10, 20, 30};
+int *p = arr;
+p++;
+printf("%d\n", *p);
+```
+
+### Snippet 9
+```c
+// 9
+int a = 5;
+int *p = &a;
+int b = (*p)++;
+printf("%d %d\n", a, b);
+```
+
+### Snippet 10
+```c
+// 10
+char ch = 'A';
+char *p = &ch;
+*p += 1;
+printf("%c\n", ch);
+```
 ### Q3: Accessing 2D array with pointers
 
 ```c
