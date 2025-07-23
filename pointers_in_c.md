@@ -435,111 +435,250 @@ int main() {
 
 ## Pointer Guess-the-Output Snippets (C)
 
-### Snippet 1
+## 🔹 1.
 ```c
-// 1
 int a = 10;
 int *p = &a;
 *p = *p + 1;
 printf("%d\n", a);
 ```
 
-### Snippet 2
+## 🔹 2.
 ```c
-// 2
 int a = 5;
 int *p = &a;
-int **pp = &p;
-printf("%d\n", **pp);
-```
-
-### Snippet 3
-```c
-// 3
-int arr[] = {1, 2, 3, 4};
-int *p = arr;
-printf("%d\n", *(p + 2));
-```
-
-### Snippet 4
-```c
-// 4
-char *str = "Hello";
-printf("%c\n", *(str + 1));
-```
-
-### Snippet 5
-```c
-// 5
-int x = 10;
-int *p = &x;
-*p += 5;
-printf("%d\n", x);
-```
-
-### Snippet 6
-```c
-// 6
-int x = 10;
-int *p = &x;
-int y = *p++;
-printf("%d\n", y);
-```
-
-### Snippet 7
-```c
-// 7
-int a = 1;
-int b = 2;
-int *p = &a;
-*p = b;
+int **q = &p;
+**q = 10;
 printf("%d\n", a);
 ```
 
-### Snippet 8
+## 🔹 3.
 ```c
-// 8
-int arr[] = {10, 20, 30};
-int *p = arr;
-p++;
-printf("%d\n", *p);
+int a = 100;
+int *p = &a;
+int *q = p;
+*p = 50;
+printf("%d %d\n", a, *q);
 ```
 
-### Snippet 9
+## 🔹 4.
 ```c
-// 9
+int a = 20;
+int *p = &a;
+(*p)++;
+printf("%d\n", a);
+```
+
+## 🔹 5.
+```c
 int a = 5;
 int *p = &a;
 int b = (*p)++;
 printf("%d %d\n", a, b);
 ```
 
-### Snippet 10
+## 🔹 6.
 ```c
-// 10
+int a = 5;
+int *p = &a;
+printf("%p %d\n", p, *p);
+```
+
+## 🔹 7.
+```c
+int arr[] = {1, 2, 3, 4};
+int *p = arr;
+printf("%d %d\n", *(p+1), p[2]);
+```
+
+## 🔹 8.
+```c
+int a[] = {10, 20, 30};
+int *p = a;
+printf("%d\n", *(++p));
+```
+
+## 🔹 9.
+```c
+char str[] = "Hello";
+char *p = str;
+printf("%c\n", *(p + 1));
+```
+
+## 🔹 10.
+```c
+char *p = "Hello";
+p++;
+printf("%c\n", *p);
+```
+
+## 🔹 11.
+```c
+int a = 5;
+int *p = &a;
+*p = *p * *p;
+printf("%d\n", *p);
+```
+
+## 🔹 12.
+```c
+int x = 100;
+int *ptr = &x;
+*ptr += 10;
+printf("%d\n", x);
+```
+
+## 🔹 13.
+```c
+int a = 5;
+int *p = &a;
+*p = ++(*p);
+printf("%d\n", a);
+```
+
+## 🔹 14.
+```c
+int arr[] = {10, 20, 30};
+int *p = arr + 1;
+printf("%d\n", *(p - 1));
+```
+
+## 🔹 15.
+```c
+int x = 5;
+int *p = &x;
+int y = *p++ + 1;
+printf("%d %d\n", y, x);
+```
+
+## 🔹 16.
+```c
+int a = 10;
+int *p = &a;
+int **q = &p;
+int ***r = &q;
+***r = 25;
+printf("%d\n", a);
+```
+
+## 🔹 17.
+```c
+char str[] = "Test";
+char *p = str;
+printf("%s\n", p + 1);
+```
+
+## 🔹 18.
+```c
+int a = 10;
+int *p = &a;
+int b = (*p)++ + a;
+printf("%d\n", b);
+```
+
+## 🔹 19.
+```c
+int a = 2;
+int *p = &a;
+int b = (*p)++ + ++(*p);
+printf("%d %d\n", a, b);
+```
+
+## 🔹 20.
+```c
+int x = 1;
+int *p = &x;
+x = x++ + ++(*p);
+printf("%d\n", x);
+```
+
+## 🔹 21.
+```c
+int a = 5;
+int *p = &a;
+int b = *p++ + *p;
+printf("%d\n", b);
+```
+
+## 🔹 22.
+```c
+char *str = "ABCDEF";
+printf("%c\n", *(str + 3));
+```
+
+## 🔹 23.
+```c
+int a[] = {1, 2, 3, 4};
+int *p = a;
+printf("%d\n", *(p + *(p+1)));
+```
+
+## 🔹 24.
+```c
+int x = 5;
+int *p = &x;
+*p = *p / 2;
+printf("%d\n", x);
+```
+
+## 🔹 25.
+```c
+int arr[] = {5, 10, 15};
+int *p = arr;
+printf("%d\n", *(p++));
+printf("%d\n", *p);
+```
+
+## 🔹 26.
+```c
+int a = 10;
+int b = 20;
+int *p = &a;
+*p = b;
+printf("%d %d\n", a, b);
+```
+
+## 🔹 27.
+```c
+int a = 10;
+int *p = &a;
+int **q = &p;
+*p += **q;
+printf("%d\n", a);
+```
+
+## 🔹 28.
+```c
+int a = 100;
+int *p1 = &a;
+int *p2 = p1;
+*p2 = 50;
+printf("%d\n", a);
+```
+
+## 🔹 29.
+```c
 char ch = 'A';
 char *p = &ch;
 *p += 1;
-printf("%c\n", ch);
+printf("%c\n", *p);
 ```
-### Q3: Accessing 2D array with pointers
 
+## 🔹 30.
 ```c
-int matrix[2][2] = {{1,2},{3,4}};
-int *ptr = &matrix[0][0];
-printf("%d", *(ptr + 2)); // prints 3
+int a = 3, b = 4;
+int *p = &a, *q = &b;
+*p = *q;
+printf("%d %d\n", a, b);
 ```
 
----
-
-## 🔹 Tips
-
-- Always initialize pointers.
-- Be careful with pointer arithmetic.
-- Use `const` with pointers when data should not be modified.
-- Avoid memory leaks by freeing allocated memory.
-
----
+## 🔹 31.
+```c
+char s[] = "abc";
+char *p = s;
+while(*p)
+    printf("%c ", *p++);
+```
 
 ## 🔹 Pointer Questions
 
