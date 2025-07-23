@@ -2,7 +2,7 @@
 
 ## 🔹 What is a Pointer?
 
-A pointer is a variable that stores the memory address of another variable. Instead of holding a direct value, it points to a location in memory where the actual value is stored.
+A pointer is a variable that stores the memory address of another variable.
 
 ```c
 int a = 10;
