@@ -104,6 +104,125 @@ printf("%d", *(ptr + 1)); // prints 20
 
 ---
 
+## 1. `char *` — Character Pointer
+
+### Passing to a function:
+
+```c
+void printChar(char *ch) {
+    printf("Char = %c\n", *ch);
+}
+```
+
+### Returning from a function:
+
+```c
+char* getCharPointer(char *ch) {
+    return ch;
+}
+```
+
+---
+
+## 2. `short *` — Short Integer Pointer
+
+### Passing to a function:
+
+```c
+void printShort(short *s) {
+    printf("Short = %d\n", *s);
+}
+```
+
+### Returning from a function:
+
+```c
+short* getShortPointer(short *s) {
+    return s;
+}
+```
+
+---
+
+## 3. `int *` — Integer Pointer
+
+### Passing to a function:
+
+```c
+void printInt(int *p) {
+    printf("Int = %d\n", *p);
+}
+```
+
+### Returning from a function:
+
+```c
+int* getIntPointer(int *p) {
+    return p;
+}
+```
+
+---
+
+## 4. `float *` — Float Pointer
+
+### Passing to a function:
+
+```c
+void printFloat(float *f) {
+    printf("Float = %.2f\n", *f);
+}
+```
+
+### Returning from a function:
+
+```c
+float* getFloatPointer(float *f) {
+    return f;
+}
+```
+
+---
+
+## 5. `long *` — Long Integer Pointer
+
+### Passing to a function:
+
+```c
+void printLong(long *l) {
+    printf("Long = %ld\n", *l);
+}
+```
+
+### Returning from a function:
+
+```c
+long* getLongPointer(long *l) {
+    return l;
+}
+```
+
+---
+
+## 6. `double *` — Double Precision Pointer
+
+### Passing to a function:
+
+```c
+void printDouble(double *d) {
+    printf("Double = %.2lf\n", *d);
+}
+```
+
+### Returning from a function:
+
+```c
+double* getDoublePointer(double *d) {
+    return d;
+}
+```
+
+---
 ## 🔹 Common Interview Snippets
 
 ### Q1: Swap two numbers using pointers
