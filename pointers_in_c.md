@@ -221,8 +221,219 @@ double* getDoublePointer(double *d) {
     return d;
 }
 ```
+---
+
+# Real-Time Applications of Pointers in C
+
+## 1. Dynamic Memory Allocation
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n;
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+
+    int *marks = (int *)malloc(n * sizeof(int));
+    if (!marks) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter marks for student %d: ", i + 1);
+        scanf("%d", &marks[i]);
+    }
+
+    for (int i = 0; i < n; i++) {
+        printf("Student %d: %d\n", i + 1, marks[i]);
+    }
+
+    free(marks);
+    return 0;
+}
+```
+
+## 2. Arrays and Strings Handling
+
+```c
+#include <stdio.h>
+
+void printArray(int *arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", *(arr + i));
+    }
+    printf("\n");
+}
+
+int main() {
+    int data[] = {10, 20, 30, 40};
+    printArray(data, 4);
+    return 0;
+}
+```
+
+## 3. Function Arguments (Call by Reference)
+
+```c
+#include <stdio.h>
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int x = 5, y = 10;
+    swap(&x, &y);
+    printf("After swap: x=%d, y=%d\n", x, y);
+    return 0;
+}
+```
+
+## 4. Data Structures (Linked List Example)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+int main() {
+    struct Node *head = (struct Node *)malloc(sizeof(struct Node));
+    head->data = 100;
+    head->next = NULL;
+
+    printf("Node data = %d\n", head->data);
+    free(head);
+    return 0;
+}
+```
+
+## 5. File Handling
+
+```c
+#include <stdio.h>
+
+int main() {
+    FILE *fp = fopen("sample.txt", "r");
+    if (fp == NULL) {
+        printf("File not found.\n");
+        return 1;
+    }
+
+    char ch;
+    while ((ch = fgetc(fp)) != EOF) {
+        putchar(ch);
+    }
+
+    fclose(fp);
+    return 0;
+}
+```
+
+## 6. Hardware Access / Embedded Systems
+
+```c
+#define GPIO_BASE_ADDR 0x40021000
+#define GPIO_OUTPUT    (*(volatile unsigned int *)(GPIO_BASE_ADDR))
+
+int main() {
+    GPIO_OUTPUT = 0x01;  // Set GPIO pin high
+    return 0;
+}
+```
+
+## 7. Function Pointers
+
+```c
+#include <stdio.h>
+
+void greet() { printf("Hello!\n"); }
+void bye()   { printf("Goodbye!\n"); }
+
+int main() {
+    void (*func_ptr)();
+
+    func_ptr = greet;
+    func_ptr();
+
+    func_ptr = bye;
+    func_ptr();
+
+    return 0;
+}
+```
+
+## 8. Buffer Management in Networks
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char buffer[1024];
+    char *ptr = buffer;
+
+    strcpy(ptr, "GET /index.html HTTP/1.1\r\nHost: example.com\r\n\r\n");
+
+    printf("HTTP Request:\n%s", buffer);
+    return 0;
+}
+```
+
+## 9. Memory-Mapped I/O
+
+```c
+#include <stdint.h>
+
+#define DEVICE_REG_ADDR 0xFF200000
+volatile uint32_t *device_reg = (uint32_t *)DEVICE_REG_ADDR;
+
+int main() {
+    *device_reg = 0xABCD1234;  // Send command/data to device
+    return 0;
+}
+```
+
+## 10. Shared Memory in IPC
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+
+int main() {
+    int shmid = shmget(IPC_PRIVATE, 1024, IPC_CREAT | 0666);
+    if (shmid == -1) {
+        perror("shmget");
+        return 1;
+    }
+
+    char *shm_ptr = (char *)shmat(shmid, NULL, 0);
+    if (shm_ptr == (char *)(-1)) {
+        perror("shmat");
+        return 1;
+    }
+
+    strcpy(shm_ptr, "Hello from shared memory!");
+
+    printf("Message written: %s\n", shm_ptr);
+    return 0;
+}
+```
 
 ---
+
+
 ## 🔹 Common Interview Snippets
 
 ### Q1: Swap two numbers using pointers
