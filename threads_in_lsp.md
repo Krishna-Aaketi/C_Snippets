@@ -218,6 +218,7 @@ Execution continues concurrently with other threads.
 
 ---
 
+### Example: No pthread_join() Used
 ```c
 #include <stdio.h>
 #include <pthread.h>
@@ -247,4 +248,152 @@ void* print_message(void* arg)
     return NULL;
 }
 
+```
+### Return String from Thread (Main Function First)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <string.h>
+
+int main() {
+    pthread_t t;
+    char* result;
+
+    pthread_create(&t, NULL, NULL, NULL); // Will replace NULL after function definition
+    pthread_create(&t, NULL, return_string, NULL);  // Corrected call
+
+    pthread_join(t, (void**)&result);  // Capture the return value
+
+    printf("Main thread received: %s\n", result);
+
+    free(result);  // Clean up
+
+    return 0;
+}
+
+// Thread function placed AFTER main
+void* return_string(void* arg) {
+    char* msg = malloc(50);
+    if (msg == NULL) {
+        perror("malloc failed");
+        pthread_exit(NULL);
+    }
+
+    strcpy(msg, "Hello from thread!");
+    return (void*)msg;
+}
+```
+### Pass Integer to Thread and Return Result (Main First)
+
+```c
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+
+int main() {
+    pthread_t thread;
+    int input = 7;
+
+    // Create thread and pass address of input
+    pthread_create(&thread, NULL, square_thread, &input);
+
+    // Wait for thread and collect result
+    int* output;
+    pthread_join(thread, (void**)&output);
+
+    printf("Square of %d is %d\n", input, *output);
+
+    free(output);  // Free the memory allocated in thread
+    return 0;
+}
+
+// Thread function defined after main
+void* square_thread(void* arg) {
+    int num = *(int*)arg;
+    int* result = malloc(sizeof(int));
+    *result = num * num;
+    return result;
+}
+```
+### Pass Two Integers to a Thread and Return Result (Main First)
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+
+// Structure to hold two input values
+struct input_data {
+    int a;
+    int b;
+};
+
+int main() {
+    pthread_t thread;
+    struct input_data values = {10, 20};
+
+    // Create thread, pass address of struct
+    pthread_create(&thread, NULL, add_thread, &values);
+
+    // Wait for result from thread
+    int* result;
+    pthread_join(thread, (void**)&result);
+
+    printf("Sum: %d + %d = %d\n", values.a, values.b, *result);
+
+    free(result); // Don't forget to free memory
+    return 0;
+}
+
+// Thread function defined after main
+void* add_thread(void* arg) {
+    struct input_data* data = (struct input_data*)arg;
+    int* sum = malloc(sizeof(int));
+    *sum = data->a + data->b;
+    return sum;
+}
+```
+### Using exit() in a Thread
+
+### If a thread calls exit(), it will:
+- Terminate the entire process, not just the thread.
+- All threads will be forcibly stopped.
+- No cleanup of other threads will happen.
+
+This is very different from pthread_exit(), which safely terminates only the calling thread.
+
+### Example: exit() inside a Thread
+Below is an example showing what happens when a thread calls exit():
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+
+void* thread_func(void* arg);
+
+int main() {
+    pthread_t t1;
+
+    printf("Main: Creating thread...\n");
+    pthread_create(&t1, NULL, thread_func, NULL);
+
+    printf("Main: Sleeping...\n");
+    sleep(2);
+
+    printf("Main: This line may not execute if thread calls exit().\n");
+
+    pthread_join(t1, NULL);  // May not reach here
+    printf("Main: Thread joined.\n");
+
+    return 0;
+}
+
+// Thread defined after main
+void* thread_func(void* arg) {
+    printf("Thread: Calling exit().\n");
+    exit(0); // Terminates entire process
+    return NULL; // Never reached
+}
 ```
