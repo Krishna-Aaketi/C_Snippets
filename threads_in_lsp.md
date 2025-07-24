@@ -218,3 +218,33 @@ Execution continues concurrently with other threads.
 
 ---
 
+```c
+#include <stdio.h>
+#include <pthread.h>
+
+void* print_message(void* arg);
+
+int main()
+{
+    pthread_t t1, t2;
+
+    pthread_create(&t1, NULL, print_message, "Thread 1");
+    pthread_create(&t2, NULL, print_message, "Thread 2");
+
+    printf("Main thread exiting...\n");
+
+    //No pthread_join() → main may exit before threads complete
+    return 0;
+}
+
+void* print_message(void* arg)
+{
+    char* msg = (char*)arg;
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%s: %d\n", msg, i);
+    }
+    return NULL;
+}
+
+```
