@@ -117,3 +117,104 @@ This transition is done via **system calls**, which act as **gates** into kernel
 4. Returns to user space and resumes your code.
 
 ---
+# Thread in C - Notes
+
+## Thread - Simple Definition
+
+A **thread** is the smallest unit of execution in a process. Threads share the same memory space but execute independently. Multiple threads in a program can run concurrently.
+
+---
+
+## C Program: Add, Subtract, Multiply, Divide Using Threads (main first)
+
+```c
+#include <stdio.h>
+#include <pthread.h>
+
+// Input numbers (global for simplicity)
+int num1 = 10, num2 = 5;
+
+// Thread function declarations
+void* add(void* arg);
+void* subtract(void* arg);
+void* multiply(void* arg);
+void* divide(void* arg);
+
+int main() {
+    pthread_t t1, t2, t3, t4;
+
+    // Create threads for each operation
+    pthread_create(&t1, NULL, add, NULL);
+    pthread_create(&t2, NULL, subtract, NULL);
+    pthread_create(&t3, NULL, multiply, NULL);
+    pthread_create(&t4, NULL, divide, NULL);
+
+    // Wait for all threads to finish
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+    pthread_join(t3, NULL);
+    pthread_join(t4, NULL);
+
+    return 0;
+}
+
+// Thread function definitions
+
+void* add(void* arg) {
+    printf("Addition: %d\n", num1 + num2);
+    return NULL;
+}
+
+void* subtract(void* arg) {
+    printf("Subtraction: %d\n", num1 - num2);
+    return NULL;
+}
+
+void* multiply(void* arg) {
+    printf("Multiplication: %d\n", num1 * num2);
+    return NULL;
+}
+
+void* divide(void* arg) {
+    if (num2 != 0)
+        printf("Division: %.2f\n", (float)num1 / num2);
+    else
+        printf("Error: Division by zero!\n");
+    return NULL;
+}
+```
+
+---
+
+## What Happens When a Thread is Created (System-Level View)
+
+When a thread is created using `pthread_create()`:
+
+- A new thread control block (TCB) is created in memory.
+- Thread shares the same data segment, heap, and file descriptors.
+- A new stack is allocated for the thread.
+- CPU registers are set up for thread context.
+
+Execution continues concurrently with other threads.
+
+---
+
+## Memory Segments in Multithreading
+
+| Segment   | Shared Between Threads? | Description                    |
+| --------- | ----------------------- | ------------------------------ |
+| **Text**  | ✅ Yes                   | Binary code (instructions)     |
+| **Data**  | ✅ Yes                   | Global/static initialized data |
+| **Heap**  | ✅ Yes                   | Dynamic memory (`malloc`)      |
+| **Stack** | ❌ No                    | Each thread has its own stack  |
+
+---
+
+## Kernel Role in Threading
+
+- Threads are managed by the **kernel scheduler** (in Linux: `NPTL` – Native POSIX Thread Library).
+- Thread creation may involve system calls (e.g., `clone()`, `futex`).
+- Context switching between threads can happen based on priority/time slice.
+
+---
+
