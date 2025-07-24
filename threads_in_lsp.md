@@ -30,19 +30,27 @@ int main() {
 
 // Function definitions
 
-int add(int a, int b) {
+int add(int a, int b)
+{
+    printf("Add function execution Started..\n");
     return a + b;
 }
 
-int subtract(int a, int b) {
+int subtract(int a, int b)
+{
+    printf("Subtract function execution Started..\n");
     return a - b;
 }
 
-int multiply(int a, int b) {
+int multiply(int a, int b)
+{
+    printf("Multiply function execution Started..\n");
     return a * b;
 }
 
-float divide(float a, float b) {
+float divide(float a, float b)
+{
+    printf("Division function execution Started..\n");
     if (b == 0) {
         printf("Error: Division by zero!\n");
         return 0;
