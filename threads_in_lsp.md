@@ -117,6 +117,40 @@ This transition is done via **system calls**, which act as **gates** into kernel
 4. Returns to user space and resumes your code.
 
 ---
+## The C Standard Library (libc)
+
+The C Standard Library (`libc`) is a critical part of any C program's runtime. Here's a breakdown of where it is present and how it works:
+
+---
+
+### Where is `libc` Present?
+
+#### Conceptually:
+`libc` is a collection of precompiled functions written in C (and some assembly) that provide standard functionality like:
+
+- `printf`, `scanf`, `malloc`, `free`, `exit`, `write`, `read`, etc.
+
+#### Physically (on Linux systems):
+
+| Location                               | Description                                      |
+|----------------------------------------|--------------------------------------------------|
+| `/lib/x86_64-linux-gnu/libc.so.6`      | Shared dynamic library used by most programs    |
+| `/usr/include/stdio.h`, etc.           | Header files for compiling (not actual code)    |
+| `/usr/lib/.../libc.a`                  | Static version of libc for static linking       |
+
+---
+
+### During Compilation and Execution
+
+- **Compilation**:  
+  When you run `gcc myprog.c`, the compiler uses header files like `#include <stdio.h>` to reference standard functions.
+
+- **Linking**:  
+  By default, `gcc` links dynamically with `libc.so` (shared library).
+
+- **Runtime**:  
+  When your program runs, the dynamic linker (`ld-linux`) loads `libc.so.6` into memory and your program uses it to execute standard functions.
+
 # Thread in C - Notes
 
 ## Thread - Simple Definition
