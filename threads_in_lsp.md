@@ -1,4 +1,4 @@
-# 📘 Function in C - Notes
+# Function in C - Notes
 
 ## Function - Simple Definition
 
@@ -203,10 +203,10 @@ Execution continues concurrently with other threads.
 
 | Segment   | Shared Between Threads? | Description                    |
 | --------- | ----------------------- | ------------------------------ |
-| **Text**  | ✅ Yes                   | Binary code (instructions)     |
-| **Data**  | ✅ Yes                   | Global/static initialized data |
-| **Heap**  | ✅ Yes                   | Dynamic memory (`malloc`)      |
-| **Stack** | ❌ No                    | Each thread has its own stack  |
+| **Text**  |   Yes                   | Binary code (instructions)     |
+| **Data**  |   Yes                   | Global/static initialized data |
+| **Heap**  |   Yes                   | Dynamic memory (`malloc`)      |
+| **Stack** |   No                    | Each thread has its own stack  |
 
 ---
 
