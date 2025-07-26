@@ -431,3 +431,143 @@ void* thread_func(void* arg) {
     return NULL; // Never reached
 }
 ```
+# 🧵 What Happens Internally When You Call `pthread_create()`
+
+---
+
+## ✅ Step 1: Your Code Calls `pthread_create()`
+
+```c
+pthread_create(&tid, NULL, thread_func, (void *)arg);
+```
+
+You are requesting the OS to create a new thread. Here's what the parameters mean:
+
+* `&tid`: Where to store the new thread ID.
+* `NULL`: Use default thread attributes.
+* `thread_func`: The function the new thread should run.
+* `(void *)arg`: Argument passed to the thread function.
+
+---
+
+## ✅ Step 2: User-space Preparation (libpthread)
+
+The call enters **libpthread**, the user-space thread library (part of glibc).
+
+**It performs:**
+
+* Validation of input arguments.
+* Allocation and tracking of internal structures for threads.
+* Stack allocation (if not specified manually).
+* Metadata setup for thread tracking.
+
+> 🧠 Memory is allocated in **user space**, but the actual thread creation is handed off to the **kernel**.
+
+---
+
+## ✅ Step 3: System Call to Kernel via `clone()`
+
+`pthread_create()` internally invokes the Linux `clone()` system call.
+
+```c
+clone(child_stack, flags); // Kernel-level thread creation
+```
+
+### `clone()` allows:
+
+* Shared address space
+* Shared file descriptors
+* Shared signal handlers
+
+Threads in Linux are implemented as **lightweight processes** via `clone()`.
+
+> The **flags** passed to `clone()` tell the kernel:
+> *“I want a thread — not a full process. Share memory and resources.”*
+
+---
+
+## ✅ Step 4: Kernel Allocates Thread Control Block (TCB)
+
+The **kernel** allocates a **Thread Control Block (TCB)**, which holds:
+
+* Thread ID (TID)
+* Stack pointer
+* Register state/context
+* Scheduling info
+* Link to the parent’s Process Control Block (PCB)
+* The start address of the thread function
+* Argument to the thread
+
+---
+
+## ✅ Step 5: Stack Setup
+
+The stack is:
+
+* Automatically allocated by `libpthread` (default), or
+* Manually defined using `pthread_attr_setstack()`
+
+The kernel:
+
+* Sets the **stack pointer** to the top of the allocated memory
+* Prepares the stack with values for **function arguments and return addresses**
+
+---
+
+## ✅ Step 6: Register Context and PC Initialization
+
+The **Program Counter (PC)** is set to the thread function address.
+
+The kernel sets up:
+
+* CPU registers for argument passing
+* Return address so the thread can exit cleanly
+* Stack pointer pointing to the thread stack
+
+---
+
+## ✅ Step 7: Scheduler Adds Thread to Run Queue
+
+The new TCB is added to the **OS scheduler’s queue**.
+
+> 🧠 The thread is **not immediately executed**; it is scheduled based on system load and policy.
+
+---
+
+## ✅ Step 8: Thread Execution Begins
+
+When the scheduler selects your thread:
+
+* It restores register context
+* Program Counter begins executing your thread function
+* Stack and argument are already set
+
+🎉 **Thread starts running your code!**
+
+---
+
+## ✅ Step 9: Thread Exits
+
+The thread completes execution via:
+
+```c
+pthread_exit(); // OR simply return;
+```
+
+### Cleanup actions:
+
+* The return value is saved for `pthread_join()` (if joinable).
+* The thread stack is deallocated.
+* The TCB is cleaned up and removed from scheduler tracking.
+
+---
+
+## 🧠 Summary
+
+From:
+
+```text
+pthread_create() → libpthread setup → clone() → kernel TCB → scheduling → execution → cleanup
+```
+
+This tight integration between **user space** and **kernel space** gives us fast and efficient multithreading in Linux.
